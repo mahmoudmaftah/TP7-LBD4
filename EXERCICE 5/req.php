@@ -1,0 +1,38 @@
+<?php
+
+// connect to database.
+$dsn = 'mysql:host=localhost;dbname=world';
+$user = 'root';
+$pass = '';
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_EMULATE_PREPARES => false,
+  ];
+try {
+    $connexion = new PDO($dsn, $user, $pass, $options);
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+
+
+$forminput = $_POST["forminput"];
+
+$query = 'SELECT name FROM city WHERE name LIKE ?';
+$params = array("$forminput%");
+$stmt = $connexion->prepare($query);
+$stmt->execute($params);
+
+$suggestion = "";
+if($stmt->rowCount() > 0){
+    while($row = $stmt->fetch(mode:PDO::FETCH_ASSOC)){
+        $suggestion .= "<option onclick()>".$row['name']."</option>";
+    }
+
+//<select value=' " .$row["name"]. " '>
+}
+echo $suggestion;
+
+
+
+?>
+
